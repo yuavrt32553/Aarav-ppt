@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Delicious Recipes with User Submissions</title>
+<style>
+  body { font-family: sans-serif; background: #fefaf6; }
+  header { background: #ffa552; padding: 20px; text-align: center; color: white; font-size: 2em; }
+  .tabs { display: flex; justify-content: center; background: #ffe1c4; }
+  .tab { padding: 10px 20px; cursor: pointer; }
+  .tab.active { border-bottom: 3px solid #ffa552; }
+  section.recipe { display: none; max-width: 700px; margin: 20px auto; background: white; padding: 20px; border-radius: 10px; }
+  section.recipe.active { display: block; }
+  .timer { margin: 10px 0; }
+  #add-recipe-form { max-width: 500px; margin: 20px auto; background: #fff5ec; padding: 20px; border-radius: 10px; }
+  #add-recipe-form input, #add-recipe-form textarea { width: 100%; margin-bottom: 10px; padding: 8px; }
+  #user-recipes { margin-top: 20px; }
+</style>
+</head>
+<body>
+
+<header>🍴 Delicious Recipes 🍴</header>
+<div class="tabs">
+  <div class="tab active" data-target="chickenSalad">Chicken Salad</div>
+  <div class="tab" data-target="veggiePasta">Veggie Pasta</div>
+  <div class="tab" data-target="addRecipe">Add Your Recipe</div>
+</div>
+
+<section class="recipe active" id="chickenSalad">
+  <h2>Chicken Salad</h2>
+  <p>Prep time: 10 minutes</p>
+  <div class="timer">Estimated cooking time: 15 minutes</div>
+</section>
+
+<section class="recipe" id="veggiePasta">
+  <h2>Veggie Pasta</h2>
+  <p>Prep time: 15 minutes</p>
+  <div class="timer">Estimated cooking time: 20 minutes</div>
+</section>
+
+<section class="recipe" id="addRecipe">
+  <h2>Add Your Own Recipe</h2>
+  <form id="add-recipe-form">
+    <input type="text" id="recipe-name" placeholder="Recipe Name" required />
+    <textarea id="recipe-description" placeholder="Description" required></textarea>
+    <textarea id="recipe-ingredients" placeholder="Ingredients" required></textarea>
+    <textarea id="recipe-instructions" placeholder="Instructions" required></textarea>
+    <button type="submit">Add Recipe</button>
+  </form>
+  <div id="user-recipes"></div>
+</section>
+
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  const sections = document.querySelectorAll('.recipe');
+  
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      sections.forEach(s => s.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.target).classList.add('active');
+    });
+  });
+
+  document.getElementById('add-recipe-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const name = document.getElementById('recipe-name').value;
+    const desc = document.getElementById('recipe-description').value;
+    const ingredients = document.getElementById('recipe-ingredients').value;
+    const instructions = document.getElementById('recipe-instructions').value;
+
+    const container = document.createElement('div');
+    container.style.border = '1px solid #ddd';
+    container.style.padding = '10px';
+    container.style.marginBottom = '10px';
+    container.innerHTML = `<h3>${name}</h3><p>${desc}</p><strong>Ingredients:</strong><p>${ingredients.replace(/\n/g, '<br>')}</p><strong>Instructions:</strong><p>${instructions.replace(/\n/g, '<br>')}</p>`;
+
+    document.getElementById('user-recipes').appendChild(container);
+
+    this.reset();
+  });
+</script>
+
+</body>
+</html>
